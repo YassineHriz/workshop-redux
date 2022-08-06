@@ -1,23 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
-
+import { useState } from "react";
+import List from './app/List';
+import { useSelector , useDispatch } from "react-redux"
+import { addTodo } from "./app/todo"
 function App() {
+  const dispatch = useDispatch()
+  const count = useSelector((state) => state.todo.count)
+  const todos = useSelector((state) => state.todo.todos)
+
+  const [input , setInput] = useState("")
+
+  const handleSubmit=(e)=>{
+    e.preventDefault()
+    dispatch(addTodo(input))
+    setInput('')
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+       <h1> 
+        TODO LIST {count}
+      </h1>
+      <form onSubmit={handleSubmit}>
+      <div>
+        <input onChange={(e) => { 
+          setInput(e.target.value)
+          }}
+          value={input}
+          
+          />
+        <button type='submit'>+</button>
+      </div>
+      </form>
+      <List/>
     </div>
   );
 }
